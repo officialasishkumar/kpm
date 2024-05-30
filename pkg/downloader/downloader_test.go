@@ -64,7 +64,7 @@ func TestGitDownloader(t *testing.T) {
 	err := gitDownloader.Download(*NewDownloadOptions(
 		WithSource(pkg.Source{
 			Git: &pkg.Git{
-				Url:    "https://github.com/kcl-lang/flask-demo-kcl-manifests.git",
+				Url:    "https://github.com/kcl-lang/flask-demo-kcl-manifests",
 				Commit: "ade147b",
 			},
 		}),
