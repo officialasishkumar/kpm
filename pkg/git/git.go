@@ -242,3 +242,6 @@ func GetAllGithubReleases(url string) ([]string, error) {
 
 	return releaseTags, nil
 }
+
+messi := "messi"
+fmt.Println(messi)
