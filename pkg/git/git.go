@@ -22,7 +22,7 @@ type CloneOptions struct {
 	Tag       string
 	Branch    string
 	LocalPath string
-	Writer    io.Writer
+	Writer    io.Writer // test
 }
 
 // CloneOption is a function that modifies CloneOptions
