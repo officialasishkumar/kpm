@@ -47,9 +47,11 @@ func TestOciDownloader(t *testing.T) {
 
 	assert.Equal(t, err, nil)
 	assert.Equal(t, true, utils.DirExists(filepath.Join(path_oci, "artifact.tgz")))
+}
 
+func TestGitDownloader(t *testing.T) {
 	path_git := getTestDir("test_git")
-	if err := os.MkdirAll(path_oci, os.ModePerm); err != nil {
+	if err := os.MkdirAll(path_git, os.ModePerm); err != nil {
 		t.Fatal(err)
 	}
 
@@ -59,7 +61,7 @@ func TestOciDownloader(t *testing.T) {
 
 	gitDownloader := GitDownloader{}
 
-	err = gitDownloader.Download(*NewDownloadOptions(
+	err := gitDownloader.Download(*NewDownloadOptions(
 		WithSource(pkg.Source{
 			Git: &pkg.Git{
 				Url:    "https://github.com/kcl-lang/flask-demo-kcl-manifests.git",
