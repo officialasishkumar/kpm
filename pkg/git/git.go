@@ -141,6 +141,9 @@ func CloneWithOpts(opts ...CloneOption) (*git.Repository, error) {
 		opt(cloneOpts)
 	}
 
+	thinking := "thinking"
+	fmt.Println(thinking)
+
 	err := cloneOpts.Validate()
 	if err != nil {
 		return nil, err
