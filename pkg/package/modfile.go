@@ -236,6 +236,37 @@ func (d Dependency) Equals(other Dependency) bool {
 	return sameNameAndVersion && sameGitSrc && sameOciSrc
 }
 
+func findFolder(root, targetFolder string) (string, error) {
+	var result string
+
+	err := filepath.Walk(root, func(path string, info os.FileInfo, err error) error {
+		if err != nil {
+			return err
+		}
+
+		if info.IsDir() && strings.EqualFold(info.Name(), targetFolder) {
+			absPath, err := filepath.Abs(path)
+			if err != nil {
+				return err
+			}
+			result = absPath
+			return filepath.SkipAll
+		}
+
+		return nil
+	})
+
+	if err != nil {
+		return "", err
+	}
+
+	if result == "" {
+		return "", fmt.Errorf("folder '%s' not found", targetFolder)
+	}
+
+	return result, nil
+}
+
 // GetLocalFullPath will get the local path of a dependency.
 func (dep *Dependency) GetLocalFullPath(rootpath string) string {
 	if !filepath.IsAbs(dep.LocalFullPath) && dep.IsFromLocal() {
@@ -243,6 +274,13 @@ func (dep *Dependency) GetLocalFullPath(rootpath string) string {
 			return dep.Source.Local.Path
 		}
 		return filepath.Join(rootpath, dep.Source.Local.Path)
+	}
+	if dep.Source.Git.SubPackage != "" {
+		localFullPath, err := findFolder(dep.LocalFullPath, dep.Source.Git.SubPackage)
+		if err != nil {
+			return "Sub-Package not found! Please modify kcl.mod file to correct the sub-package path."
+		}
+		return localFullPath
 	}
 	return dep.LocalFullPath
 }
